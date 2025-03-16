@@ -1,27 +1,32 @@
 import LeafletMap from '@/app/(dashboard)/_components/map/index';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+import OverviewCard from '@/app/(dashboard)/_components/card';
+import { Suspense } from 'react';
+import CardSkeleton from '@/app/(dashboard)/_components/skeleton/card-skeleton';
 
 export default async function Home() {
   return (
     <div className='space-y-4'>
-      <div className='flex items-center flex-col md:flex-row justify-between space-y-2 md:space-y-0'>
-        <div className='w-full'>
-          <h1 className='text-xl md:text-2xl font-bold'>
-            Geographic Information Dashboard
-          </h1>
-          <p className='text-sm text-muted-foreground'>
-            Visualize spatial data easily with an interactive map powered by
-            Leaflet and Next.js.
-          </p>
-        </div>
+      <div className='flex items-start flex-col md:flex-row justify-between space-y-2 md:space-y-0'>
+        <h1 className='text-xl md:text-2xl font-bold'>
+          Geographic Information Dashboard
+        </h1>
 
-        {/* Add Marker Button */}
         <Button
           className='w-full md:w-fit'
           asChild>
           <Link href={'/add-location'}>Add Marker</Link>
         </Button>
+      </div>
+
+      <Separator />
+
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-1 gap-4'>
+        <Suspense fallback={<CardSkeleton />}>
+          <OverviewCard />
+        </Suspense>
       </div>
 
       <LeafletMap />
