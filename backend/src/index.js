@@ -112,7 +112,7 @@ app.post("/login", async (req, res) => {
   }
 
   // res.json({ message: "Login success" });
-  res.json({ message: "User created", data: serializeBigInt(result) });
+  // res.json({ message: "User created", data: serializeBigInt(result) });
 });
 
 // GET ALL USERS
