@@ -46,7 +46,18 @@ app.post("/register", async (req, res) => {
     return res.status(400).json({ error: "Semua field harus diisi" });
   }
 
+  const existingEmail = await prisma.users.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (existingEmail) {
+    return res.status(400).json({ error: "Email sudah terdaftar" });
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const result = await prisma.users.create({
     data: {
       name,
