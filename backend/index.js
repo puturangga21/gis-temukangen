@@ -11,7 +11,7 @@ const app = express();
 const PORT = 3001;
 
 const corsOption = {
-  origin: ["http://localhost:3000", "https://192.168.4.4"],
+  origin: ["http://localhost:3000", "https://192.168.4.4", "https://gis_2205551142.manpits.xyz"],
   credentials: true,
 };
 
