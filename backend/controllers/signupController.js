@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import prisma from "../prisma/prisma.js";
 import { serializeBigInt } from "../lib.js";
 
 const signupController = async (req, res) => {
