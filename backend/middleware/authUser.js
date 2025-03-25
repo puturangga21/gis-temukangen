@@ -32,9 +32,9 @@ const authUser = (req, res) => {
       const accessToken = createAccessToken(payload);
 
       res.cookie("accessToken", accessToken, {
-        secure: false,
+        secure: true,
         httpOnly: true,
-        sameSite: "",
+        sameSite: "none",
         expires: new Date(Date.now() + 15 * 60 * 1000),
       });
 
