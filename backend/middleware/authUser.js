@@ -34,7 +34,7 @@ const authUser = (req, res) => {
       res.cookie("accessToken", accessToken, {
         secure: true,
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "",
         expires: new Date(Date.now() + 15 * 60 * 1000),
       });
 
