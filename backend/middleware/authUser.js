@@ -33,7 +33,7 @@ const authUser = (req, res) => {
 
       res.cookie("accessToken", accessToken, {
         secure: false,
-        httpOnly: false,
+        httpOnly: true,
         sameSite: "", // Helps prevent CSRF attacks
         expires: new Date(Date.now() + 15 * 60 * 1000),
       });
