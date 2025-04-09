@@ -8,7 +8,7 @@ import locationRoute from "./route/locationRoute.js";
 dotenv.config();
 
 const app = express();
-const PORT = 3001;
+const PORT = 2242;
 
 const corsOption = {
   origin: ["https://gis_2205551142.manpits.xyz", "http://192.168.4.4", "http://localhost:3000"],
