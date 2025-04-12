@@ -8,7 +8,7 @@ import locationRoute from "./route/locationRoute.js";
 dotenv.config();
 
 const app = express();
-const PORT = 80;
+const PORT = 8080;
 
 const corsOption = {
   origin: ["https://gis_2205551142.manpits.xyz", "http://192.168.4.4", "http://localhost:3000"],
@@ -36,24 +36,3 @@ app.get("/", (req, res) => {
 });
 app.use("/api", loginRoute);
 app.use("/api", locationRoute);
-
-// const accessValidation = (req, res, next) => {
-//   const { authorization } = req.headers;
-//
-//   if (!authorization) {
-//     return res.status(401).json({ error: "Token diperlukan!" });
-//   }
-//
-//   const token = authorization.split(" ")[1];
-//   const secret = process.env.JWT_SECRET;
-//
-//   try {
-//     const jwtDecode = jwt.verify(token, secret);
-//     req.userData = jwtDecode;
-//   } catch (e) {
-//     return res.status(401).json({ error: "Token tidak valid!" });
-//   }
-//
-//   next();
-// };
-//
