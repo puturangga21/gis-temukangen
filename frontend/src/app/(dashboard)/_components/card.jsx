@@ -1,10 +1,29 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, MapPin } from 'lucide-react';
-import { fetchLocation } from '@/app/(dashboard)/lib/data';
+'use client';
 
-const OverviewCard = async () => {
-  const totalMarker = await fetchLocation();
+import { fetchLocation } from '@/app/(dashboard)/lib/data';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+const OverviewCard = () => {
+  const [totalMarker, setTotalMarker] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchLocation();
+        setTotalMarker(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -15,7 +34,12 @@ const OverviewCard = async () => {
         </CardHeader>
         <CardContent>
           <div className='text-2xl font-bold'>
-            {totalMarker?.locations?.length || 0}
+            {/* {totalMarker?.locations?.length || 0} */}
+            {loading ? (
+              <Skeleton className='w-10 h-8' />
+            ) : (
+              totalMarker?.locations?.length || 0
+            )}
           </div>
         </CardContent>
       </Card>

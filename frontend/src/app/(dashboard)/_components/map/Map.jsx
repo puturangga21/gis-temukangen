@@ -27,7 +27,7 @@ const listTiles = [
 
 const Map = () => {
   const [allMarkers, setAllMarkers] = useState([]);
-  const [selectedTile, setSelectedTile] = useState(listTiles[1]);
+  const [selectedTile, setSelectedTile] = useState(listTiles[0]);
 
   useEffect(() => {
     const getMarkers = async () => {
@@ -43,6 +43,7 @@ const Map = () => {
       <div className='rounded-lg flex w-full overflow-hidden relative'>
         <div className='absolute top-4 right-4 z-[999999]'>
           <Select
+            defaultValue={selectedTile.name}
             onValueChange={(val) => {
               const tile = listTiles.find((t) => t.name === val);
               if (tile) setSelectedTile(tile);
