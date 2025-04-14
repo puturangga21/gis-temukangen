@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { createAccessToken, serializeBigInt } from "../lib.js";
 
 const authUser = (req, res) => {
-  console.log({ message: "log pertama", cookies: req.cookies });
+  // console.log({ message: "log pertama", cookies: req.cookies });
 
   const accessToken = req.cookies["accessToken"];
   const refreshToken = req.cookies["refreshToken"];

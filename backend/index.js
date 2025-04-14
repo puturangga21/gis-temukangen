@@ -14,8 +14,9 @@ const corsOption = {
   origin: [
     "https://gis_2205551142.manpits.xyz",
     "http://192.168.4.4",
-    "http://localhost:3000",
     "http://192.168.4.4:2242",
+    "http://localhost:3000",
+    "http://localhost:2242",
   ],
   credentials: true,
   methods: ["GET", "POST"],
@@ -34,8 +35,8 @@ app.get("/", (req, res) => {
   res.send({
     message: "Welcome to GIS API | 2205551142 🚀",
     endpoint: {
-      locations: "http://localhost/api/locations",
-      login: "http://localhost/api/login",
+      locations: "http://localhost:8080/api/locations",
+      login: "http://localhost:8080/api/login",
     },
   });
 });
