@@ -44,8 +44,8 @@ const loginController = async (req, res) => {
     });
 
     res.cookie("accessToken", accessToken, {
-      httpOnly: none,
-      secure: true,
+      httpOnly: true,
+      secure: none,
       sameSite: "lax",
       expires: new Date(Date.now() + 15 * 60 * 1000), // 15 menit
     });
