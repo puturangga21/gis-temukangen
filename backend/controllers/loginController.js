@@ -38,14 +38,14 @@ const loginController = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: none,
+      secure: false,
       sameSite: "lax",
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 hari
     });
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: none,
+      secure: false,
       sameSite: "lax",
       expires: new Date(Date.now() + 15 * 60 * 1000), // 15 menit
     });
