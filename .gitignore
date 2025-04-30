@@ -10,7 +10,7 @@
 /frontend/.idea
 /frontend/.env*
 /frontend/.git
-/frontend
+# /frontend
 
 /frontend_old
 /.idea
