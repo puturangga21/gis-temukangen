@@ -981,7 +981,6 @@ export namespace Prisma {
     location_name: string | null
     description: string | null
     created_at: Date | null
-    updated_at: Date | null
   }
 
   export type LocationsMaxAggregateOutputType = {
@@ -993,7 +992,6 @@ export namespace Prisma {
     location_name: string | null
     description: string | null
     created_at: Date | null
-    updated_at: Date | null
   }
 
   export type LocationsCountAggregateOutputType = {
@@ -1005,7 +1003,6 @@ export namespace Prisma {
     location_name: number
     description: number
     created_at: number
-    updated_at: number
     _all: number
   }
 
@@ -1035,7 +1032,6 @@ export namespace Prisma {
     location_name?: true
     description?: true
     created_at?: true
-    updated_at?: true
   }
 
   export type LocationsMaxAggregateInputType = {
@@ -1047,7 +1043,6 @@ export namespace Prisma {
     location_name?: true
     description?: true
     created_at?: true
-    updated_at?: true
   }
 
   export type LocationsCountAggregateInputType = {
@@ -1059,7 +1054,6 @@ export namespace Prisma {
     location_name?: true
     description?: true
     created_at?: true
-    updated_at?: true
     _all?: true
   }
 
@@ -1158,7 +1152,6 @@ export namespace Prisma {
     location_name: string
     description: string
     created_at: Date
-    updated_at: Date
     _count: LocationsCountAggregateOutputType | null
     _avg: LocationsAvgAggregateOutputType | null
     _sum: LocationsSumAggregateOutputType | null
@@ -1189,7 +1182,6 @@ export namespace Prisma {
     location_name?: boolean
     description?: boolean
     created_at?: boolean
-    updated_at?: boolean
   }, ExtArgs["result"]["locations"]>
 
 
@@ -1203,10 +1195,9 @@ export namespace Prisma {
     location_name?: boolean
     description?: boolean
     created_at?: boolean
-    updated_at?: boolean
   }
 
-  export type locationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "latitude" | "longitude" | "pointX" | "pointY" | "location_name" | "description" | "created_at" | "updated_at", ExtArgs["result"]["locations"]>
+  export type locationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "latitude" | "longitude" | "pointX" | "pointY" | "location_name" | "description" | "created_at", ExtArgs["result"]["locations"]>
 
   export type $locationsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "locations"
@@ -1220,7 +1211,6 @@ export namespace Prisma {
       location_name: string
       description: string
       created_at: Date
-      updated_at: Date
     }, ExtArgs["result"]["locations"]>
     composites: {}
   }
@@ -1598,7 +1588,6 @@ export namespace Prisma {
     readonly location_name: FieldRef<"locations", 'String'>
     readonly description: FieldRef<"locations", 'String'>
     readonly created_at: FieldRef<"locations", 'DateTime'>
-    readonly updated_at: FieldRef<"locations", 'DateTime'>
   }
     
 
@@ -1949,7 +1938,6 @@ export namespace Prisma {
     password: string | null
     nim: bigint | null
     created_at: Date | null
-    updated_at: Date | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -1959,7 +1947,6 @@ export namespace Prisma {
     password: string | null
     nim: bigint | null
     created_at: Date | null
-    updated_at: Date | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -1969,7 +1956,6 @@ export namespace Prisma {
     password: number
     nim: number
     created_at: number
-    updated_at: number
     _all: number
   }
 
@@ -1991,7 +1977,6 @@ export namespace Prisma {
     password?: true
     nim?: true
     created_at?: true
-    updated_at?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -2001,7 +1986,6 @@ export namespace Prisma {
     password?: true
     nim?: true
     created_at?: true
-    updated_at?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -2011,7 +1995,6 @@ export namespace Prisma {
     password?: true
     nim?: true
     created_at?: true
-    updated_at?: true
     _all?: true
   }
 
@@ -2108,7 +2091,6 @@ export namespace Prisma {
     password: string | null
     nim: bigint | null
     created_at: Date
-    updated_at: Date
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
     _sum: UsersSumAggregateOutputType | null
@@ -2137,7 +2119,6 @@ export namespace Prisma {
     password?: boolean
     nim?: boolean
     created_at?: boolean
-    updated_at?: boolean
   }, ExtArgs["result"]["users"]>
 
 
@@ -2149,10 +2130,9 @@ export namespace Prisma {
     password?: boolean
     nim?: boolean
     created_at?: boolean
-    updated_at?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "nim" | "created_at" | "updated_at", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "nim" | "created_at", ExtArgs["result"]["users"]>
 
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
@@ -2164,7 +2144,6 @@ export namespace Prisma {
       password: string | null
       nim: bigint | null
       created_at: Date
-      updated_at: Date
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -2540,7 +2519,6 @@ export namespace Prisma {
     readonly password: FieldRef<"users", 'String'>
     readonly nim: FieldRef<"users", 'BigInt'>
     readonly created_at: FieldRef<"users", 'DateTime'>
-    readonly updated_at: FieldRef<"users", 'DateTime'>
   }
     
 
@@ -2884,8 +2862,7 @@ export namespace Prisma {
     pointY: 'pointY',
     location_name: 'location_name',
     description: 'description',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
+    created_at: 'created_at'
   };
 
   export type LocationsScalarFieldEnum = (typeof LocationsScalarFieldEnum)[keyof typeof LocationsScalarFieldEnum]
@@ -2897,8 +2874,7 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     nim: 'nim',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
+    created_at: 'created_at'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -2992,7 +2968,6 @@ export namespace Prisma {
     location_name?: StringFilter<"locations"> | string
     description?: StringFilter<"locations"> | string
     created_at?: DateTimeFilter<"locations"> | Date | string
-    updated_at?: DateTimeFilter<"locations"> | Date | string
   }
 
   export type locationsOrderByWithRelationInput = {
@@ -3004,7 +2979,6 @@ export namespace Prisma {
     location_name?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
     _relevance?: locationsOrderByRelevanceInput
   }
 
@@ -3020,7 +2994,6 @@ export namespace Prisma {
     location_name?: StringFilter<"locations"> | string
     description?: StringFilter<"locations"> | string
     created_at?: DateTimeFilter<"locations"> | Date | string
-    updated_at?: DateTimeFilter<"locations"> | Date | string
   }, "id">
 
   export type locationsOrderByWithAggregationInput = {
@@ -3032,7 +3005,6 @@ export namespace Prisma {
     location_name?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
     _count?: locationsCountOrderByAggregateInput
     _avg?: locationsAvgOrderByAggregateInput
     _max?: locationsMaxOrderByAggregateInput
@@ -3052,7 +3024,6 @@ export namespace Prisma {
     location_name?: StringWithAggregatesFilter<"locations"> | string
     description?: StringWithAggregatesFilter<"locations"> | string
     created_at?: DateTimeWithAggregatesFilter<"locations"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"locations"> | Date | string
   }
 
   export type usersWhereInput = {
@@ -3065,7 +3036,6 @@ export namespace Prisma {
     password?: StringNullableFilter<"users"> | string | null
     nim?: BigIntNullableFilter<"users"> | bigint | number | null
     created_at?: DateTimeFilter<"users"> | Date | string
-    updated_at?: DateTimeFilter<"users"> | Date | string
   }
 
   export type usersOrderByWithRelationInput = {
@@ -3075,7 +3045,6 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     nim?: SortOrderInput | SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
     _relevance?: usersOrderByRelevanceInput
   }
 
@@ -3089,7 +3058,6 @@ export namespace Prisma {
     password?: StringNullableFilter<"users"> | string | null
     nim?: BigIntNullableFilter<"users"> | bigint | number | null
     created_at?: DateTimeFilter<"users"> | Date | string
-    updated_at?: DateTimeFilter<"users"> | Date | string
   }, "id" | "email">
 
   export type usersOrderByWithAggregationInput = {
@@ -3099,7 +3067,6 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     nim?: SortOrderInput | SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
     _count?: usersCountOrderByAggregateInput
     _avg?: usersAvgOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
@@ -3117,7 +3084,6 @@ export namespace Prisma {
     password?: StringNullableWithAggregatesFilter<"users"> | string | null
     nim?: BigIntNullableWithAggregatesFilter<"users"> | bigint | number | null
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
   }
 
   export type locationsCreateInput = {
@@ -3128,7 +3094,6 @@ export namespace Prisma {
     location_name: string
     description: string
     created_at?: Date | string
-    updated_at: Date | string
   }
 
   export type locationsUncheckedCreateInput = {
@@ -3140,7 +3105,6 @@ export namespace Prisma {
     location_name: string
     description: string
     created_at?: Date | string
-    updated_at: Date | string
   }
 
   export type locationsUpdateInput = {
@@ -3151,7 +3115,6 @@ export namespace Prisma {
     location_name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type locationsUncheckedUpdateInput = {
@@ -3163,7 +3126,6 @@ export namespace Prisma {
     location_name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type locationsCreateManyInput = {
@@ -3175,7 +3137,6 @@ export namespace Prisma {
     location_name: string
     description: string
     created_at?: Date | string
-    updated_at: Date | string
   }
 
   export type locationsUpdateManyMutationInput = {
@@ -3186,7 +3147,6 @@ export namespace Prisma {
     location_name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type locationsUncheckedUpdateManyInput = {
@@ -3198,7 +3158,6 @@ export namespace Prisma {
     location_name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type usersCreateInput = {
@@ -3207,7 +3166,6 @@ export namespace Prisma {
     password?: string | null
     nim?: bigint | number | null
     created_at?: Date | string
-    updated_at: Date | string
   }
 
   export type usersUncheckedCreateInput = {
@@ -3217,7 +3175,6 @@ export namespace Prisma {
     password?: string | null
     nim?: bigint | number | null
     created_at?: Date | string
-    updated_at: Date | string
   }
 
   export type usersUpdateInput = {
@@ -3226,7 +3183,6 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     nim?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type usersUncheckedUpdateInput = {
@@ -3236,7 +3192,6 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     nim?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type usersCreateManyInput = {
@@ -3246,7 +3201,6 @@ export namespace Prisma {
     password?: string | null
     nim?: bigint | number | null
     created_at?: Date | string
-    updated_at: Date | string
   }
 
   export type usersUpdateManyMutationInput = {
@@ -3255,7 +3209,6 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     nim?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type usersUncheckedUpdateManyInput = {
@@ -3265,7 +3218,6 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     nim?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -3331,7 +3283,6 @@ export namespace Prisma {
     location_name?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
   }
 
   export type locationsAvgOrderByAggregateInput = {
@@ -3351,7 +3302,6 @@ export namespace Prisma {
     location_name?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
   }
 
   export type locationsMinOrderByAggregateInput = {
@@ -3363,7 +3313,6 @@ export namespace Prisma {
     location_name?: SortOrder
     description?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
   }
 
   export type locationsSumOrderByAggregateInput = {
@@ -3482,7 +3431,6 @@ export namespace Prisma {
     password?: SortOrder
     nim?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
   }
 
   export type usersAvgOrderByAggregateInput = {
@@ -3497,7 +3445,6 @@ export namespace Prisma {
     password?: SortOrder
     nim?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
   }
 
   export type usersMinOrderByAggregateInput = {
@@ -3507,7 +3454,6 @@ export namespace Prisma {
     password?: SortOrder
     nim?: SortOrder
     created_at?: SortOrder
-    updated_at?: SortOrder
   }
 
   export type usersSumOrderByAggregateInput = {

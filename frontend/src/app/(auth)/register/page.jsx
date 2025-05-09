@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import axios from 'axios';
-import { API_URL } from '@/lib/constant';
+import { auth } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function Register() {
   const router = useRouter();
@@ -19,14 +19,12 @@ export default function Register() {
   const [user, setUser] = useState({
     name: '',
     email: '',
-    nim: '',
-    password: '',
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user.name || !user.email || !user.nim || !user.password) {
+    if (!user.email || !user.password) {
       setError('Semua data wajib di isi!');
       return null;
     }
@@ -34,19 +32,18 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/signup`, user, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        user.email,
+        user.password
+      );
 
-      if (response.status === 200) {
-        router.push('/login');
-      }
+      console.log({ res });
+
+      router.push('/login');
     } catch (e) {
-      setError(e?.response?.data?.error);
-      console.log(e);
+      console.error(e);
+      setError(e?.code);
     } finally {
       setLoading(false);
     }
@@ -75,7 +72,7 @@ export default function Register() {
                     </div>
                   )}
 
-                  <div className='grid gap-2'>
+                  {/* <div className='grid gap-2'>
                     <Label htmlFor='name'>Name</Label>
                     <Input
                       id='name'
@@ -87,7 +84,7 @@ export default function Register() {
                       }
                       required
                     />
-                  </div>
+                  </div> */}
 
                   <div className='grid gap-2'>
                     <Label htmlFor='email'>Email</Label>
@@ -103,7 +100,7 @@ export default function Register() {
                     />
                   </div>
 
-                  <div className='grid gap-2'>
+                  {/* <div className='grid gap-2'>
                     <Label htmlFor='nim'>NIM</Label>
                     <Input
                       id='nim'
@@ -115,7 +112,7 @@ export default function Register() {
                       }
                       required
                     />
-                  </div>
+                  </div> */}
 
                   <div className='grid gap-2'>
                     <Label htmlFor='password'>Password</Label>

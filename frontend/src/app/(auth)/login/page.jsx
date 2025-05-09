@@ -1,15 +1,15 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
+import { auth } from '@/lib/firebase';
+import { cn } from '@/lib/utils';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import Link from 'next/link';
-import { API_URL } from '@/lib/constant';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Login() {
   const router = useRouter();
@@ -31,21 +31,18 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/login`, data, {
-        method: 'POST',
-        withCredentials: true,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
 
-      if (response.status === 200) {
-        router.push('/');
-      }
+      console.log(response.user);
+
+      router.push('/');
     } catch (e) {
-      setError(e?.response?.data?.error);
-      console.log(e);
+      console.error(e);
+      setError(e?.code);
     } finally {
       setLoading(false);
     }

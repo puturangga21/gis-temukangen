@@ -17,7 +17,6 @@ model locations {
   location_name String   @db.VarChar(255)
   description   String   @db.VarChar(255)
   created_at    DateTime @default(now())
-  updated_at    DateTime
 }
 
 model users {
@@ -27,5 +26,4 @@ model users {
   password   String?  @db.VarChar(255)
   nim        BigInt?
   created_at DateTime @default(now())
-  updated_at DateTime
 }

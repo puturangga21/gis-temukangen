@@ -1,7 +1,6 @@
 import './globals.css';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import { UserProvider } from '@/context/UserContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,7 +29,7 @@ export default function RootLayout({ children }) {
           defaultTheme='dark'
           enableSystem
           disableTransitionOnChange>
-          <UserProvider>{children}</UserProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

@@ -1,17 +1,31 @@
 'use client';
 
-import React from 'react';
+import { AppSidebar } from '@/components/app-sidebar';
+import DynamicBreadcrumb from '@/components/dynamic-breadcrumb';
+import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/app-sidebar';
-import { Separator } from '@/components/ui/separator';
-import DynamicBreadcrumb from '@/components/dynamic-breadcrumb';
-import ProtectedRoute from '@/components/protected-route';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const Layout = ({ children }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push('/login');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -31,4 +45,4 @@ const Layout = ({ children }) => {
     </SidebarProvider>
   );
 };
-export default ProtectedRoute(Layout);
+export default Layout;

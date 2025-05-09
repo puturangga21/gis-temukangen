@@ -128,8 +128,7 @@ exports.Prisma.LocationsScalarFieldEnum = {
   pointY: 'pointY',
   location_name: 'location_name',
   description: 'description',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  created_at: 'created_at'
 };
 
 exports.Prisma.UsersScalarFieldEnum = {
@@ -138,8 +137,7 @@ exports.Prisma.UsersScalarFieldEnum = {
   email: 'email',
   password: 'password',
   nim: 'nim',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {

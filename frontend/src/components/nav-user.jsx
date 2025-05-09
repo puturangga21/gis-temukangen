@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronsUpDown, LogOut } from 'lucide-react';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -17,15 +16,32 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useCredential } from '@/context/UserContext';
-import axios from 'axios';
-import { API_URL } from '@/lib/constant';
-import { useRouter } from 'next/navigation';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { Skeleton } from './ui/skeleton';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { credential, loading } = useCredential();
+  const [credential, setCredential] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCredential({
+          name: user.displayName ?? 'Anonim',
+          email: user.email,
+          avatar: user.photoURL ?? undefined,
+        });
+      } else {
+        setCredential(null); // belum login
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <SidebarMenu>
@@ -90,26 +106,10 @@ export function NavUser() {
 }
 
 function FormLogout() {
-  const router = useRouter();
-
-  const handleLogout = async (e) => {
-    e.preventDefault();
-
-    try {
-      await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
-
-      // console.log(res.data.message);
-      router.push('/login');
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
-    <form
-      className='contents w-full'
-      onSubmit={handleLogout}>
+    <form className='contents w-full'>
       <button
+        onClick={() => signOut(auth)}
         className='contents w-full'
         type='submit'>
         <LogOut size='16' />

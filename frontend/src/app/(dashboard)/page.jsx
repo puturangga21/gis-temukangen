@@ -1,12 +1,12 @@
-import LeafletMap from '@/app/(dashboard)/_components/map/index';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
 import OverviewCard from '@/app/(dashboard)/_components/card';
-import { Suspense } from 'react';
+import LeafletMap from '@/app/(dashboard)/_components/map/index';
 import CardSkeleton from '@/app/(dashboard)/_components/skeleton/card-skeleton';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
+import { Suspense } from 'react';
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className='space-y-4'>
       <div className='flex items-start flex-col md:flex-row justify-between space-y-2 md:space-y-0'>
