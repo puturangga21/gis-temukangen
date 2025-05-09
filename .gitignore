@@ -3,6 +3,7 @@
 /backend/.env*
 /backend/.git
 /backend/.idea
+/backend
 
 # Frontend
 /frontend/node_modules
