@@ -46,7 +46,7 @@ export function NavUser() {
         );
 
         setCredential(response.data.data.user);
-        console.log(response.data.data.user);
+        // console.log(response.data.data.user);
       } catch (error) {
         console.error('Gagal mengambil data pengguna:', error);
       } finally {

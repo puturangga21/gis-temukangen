@@ -28,6 +28,14 @@ const navMain = [
         title: 'Add Location',
         url: '/add-location',
       },
+      {
+        title: 'Ruas Jalan',
+        url: '/ruas-jalan',
+      },
+      {
+        title: 'Add Ruas Jalan',
+        url: '/add-ruas-jalan',
+      },
     ],
   },
 ];

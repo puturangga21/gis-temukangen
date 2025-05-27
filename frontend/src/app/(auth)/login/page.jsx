@@ -39,7 +39,7 @@ export default function Login() {
         }
       );
 
-      console.log({ response });
+      // console.log({ response });
 
       localStorage.setItem('gis_token', response.data.meta.token);
       localStorage.setItem(

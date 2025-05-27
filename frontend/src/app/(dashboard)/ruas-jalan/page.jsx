@@ -1,12 +1,12 @@
-import LeafletMap from '@/app/(dashboard)/_components/map/index';
-import CardSkeleton from '@/app/(dashboard)/_components/skeleton/card-skeleton';
+import LeafletMap from '@/app/(dashboard)/ruas-jalan/_components/map/index';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import CardSkeleton from '../_components/skeleton/card-skeleton';
 import OverviewCard from './_components/card';
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className='space-y-4'>
       <div className='flex items-start flex-col md:flex-row justify-between space-y-2 md:space-y-0'>
@@ -14,11 +14,11 @@ export default async function Home() {
           Geographic Information Dashboard
         </h1>
 
-        <Button
+        {/* <Button
           className='w-full md:w-fit'
           asChild>
           <Link href={'/add-location'}>Add Marker</Link>
-        </Button>
+        </Button> */}
       </div>
 
       <Separator />
