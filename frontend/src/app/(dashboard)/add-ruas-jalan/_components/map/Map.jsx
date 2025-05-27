@@ -63,6 +63,7 @@ const Map = () => {
   const [selectedTile, setSelectedTile] = useState(listTiles[0]);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [createdLineLatLngs, setCreatedLineLatLngs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [kabupaten, setKabupaten] = useState([]);
   const [kecamatan, setKecamatan] = useState([]);
@@ -163,12 +164,13 @@ const Map = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    setLoading(true);
 
     const encodedPath = polyline.encode(
       createdLineLatLngs.map((point) => [point.lat, point.lng])
     );
 
+    const formData = new FormData(e.currentTarget);
     const nama_ruas = formData.get('nama_ruas');
     const panjang = formData.get('panjang');
     const lebar = formData.get('lebar');
@@ -181,7 +183,6 @@ const Map = () => {
 
     try {
       const token = localStorage.getItem('gis_token');
-
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/ruasjalan`,
         {
@@ -203,8 +204,9 @@ const Map = () => {
         }
       );
 
-      console.log('Data berhasil disimpan:', res.data);
+      setLoading(false);
       setOpenDrawer(false);
+      console.log(res);
     } catch (error) {
       console.error('Gagal menyimpan data:', error);
     }
@@ -460,7 +462,11 @@ const Map = () => {
                 </div>
 
                 <DrawerFooter>
-                  <Button type='submit'></Button>
+                  <Button
+                    type='submit'
+                    disabled={loading}>
+                    {loading ? 'Loading...' : 'Tambah Ruas'}
+                  </Button>
                 </DrawerFooter>
               </form>
             </DrawerContent>
