@@ -1,6 +1,5 @@
 'use client';
 
-import { ChevronsUpDown, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -16,10 +15,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Skeleton } from './ui/skeleton';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -27,20 +27,34 @@ export function NavUser() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCredential({
-          name: user.displayName ?? 'Anonim',
-          email: user.email,
-          avatar: user.photoURL ?? undefined,
-        });
-      } else {
-        setCredential(null); // belum login
-      }
-      setLoading(false);
-    });
+    const fetchCredential = async () => {
+      const authToken = localStorage.getItem('gis_token');
 
-    return () => unsubscribe();
+      if (!authToken) {
+        setLoading(false); // Hentikan loading jika tidak ada token
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        setCredential(response.data.data.user);
+        console.log(response.data.data.user);
+      } catch (error) {
+        console.error('Gagal mengambil data pengguna:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCredential();
   }, []);
 
   return (
@@ -106,12 +120,44 @@ export function NavUser() {
 }
 
 function FormLogout() {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const authToken = localStorage.getItem('gis_token');
+
+    if (!authToken) {
+      console.log('Tidak ada token untuk logout.');
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      console.log({ response });
+
+      localStorage.removeItem('gis_token');
+      localStorage.removeItem('gis_token_expired');
+      router.push('/login');
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <form className='contents w-full'>
       <button
-        onClick={() => signOut(auth)}
+        onClick={handleLogout}
         className='contents w-full'
-        type='submit'>
+        type='button'>
         <LogOut size='16' />
         Log out
       </button>

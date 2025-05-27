@@ -1,15 +1,14 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import axios from 'axios';
 import Link from 'next/link';
-import { auth } from '@/lib/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Register() {
   const router = useRouter();
@@ -19,12 +18,13 @@ export default function Register() {
   const [user, setUser] = useState({
     name: '',
     email: '',
+    password: '',
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user.email || !user.password) {
+    if (!user.name || !user.email || !user.password) {
       setError('Semua data wajib di isi!');
       return null;
     }
@@ -32,18 +32,21 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        user.email,
-        user.password
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/register`,
+        {
+          name: user.name,
+          email: user.email,
+          password: user.password,
+        }
       );
 
-      console.log({ res });
+      console.log({ response });
 
       router.push('/login');
     } catch (e) {
       console.error(e);
-      setError(e?.code);
+      setError(e?.response?.data?.meta?.message);
     } finally {
       setLoading(false);
     }
@@ -72,7 +75,7 @@ export default function Register() {
                     </div>
                   )}
 
-                  {/* <div className='grid gap-2'>
+                  <div className='grid gap-2'>
                     <Label htmlFor='name'>Name</Label>
                     <Input
                       id='name'
@@ -84,7 +87,7 @@ export default function Register() {
                       }
                       required
                     />
-                  </div> */}
+                  </div>
 
                   <div className='grid gap-2'>
                     <Label htmlFor='email'>Email</Label>

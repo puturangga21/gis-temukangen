@@ -8,8 +8,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -17,13 +15,11 @@ const Layout = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.push('/login');
-      }
-    });
+    const authToken = localStorage.getItem('gis_token');
 
-    return () => unsubscribe();
+    if (!authToken) {
+      router.push('/login');
+    }
   }, [router]);
 
   return (

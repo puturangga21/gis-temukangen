@@ -4,9 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { auth } from '@/lib/firebase';
 import { cn } from '@/lib/utils';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -29,20 +28,28 @@ export default function Login() {
     }
 
     setLoading(true);
+    setError('');
 
     try {
-      const response = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/login`,
+        {
+          email: data.email,
+          password: data.password,
+        }
       );
 
-      console.log(response.user);
+      console.log({ response });
+
+      localStorage.setItem('gis_token', response.data.meta.token);
+      localStorage.setItem(
+        'gis_token_expired',
+        (Date.now() / 1000 + response.data.meta['token-expired']).toString()
+      );
 
       router.push('/');
     } catch (e) {
-      console.error(e);
-      setError(e?.code);
+      setError(e?.response?.data?.meta?.message);
     } finally {
       setLoading(false);
     }
