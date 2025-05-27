@@ -41,6 +41,7 @@ import {
   fetchKondisi,
   fetchRegion,
 } from '@/app/(dashboard)/lib/data';
+import polyline from '@mapbox/polyline';
 
 const listTiles = [
   {
@@ -103,110 +104,111 @@ const Map = () => {
     fetchRuasJalan();
   }, []);
 
-  // FETCH REGION KABUPATEN
+  // FETCH INITIAL DATA
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       try {
-        const data = await fetchRegion();
-        // console.log(data.data);
-        setKabupaten(data?.data?.kabupaten);
+        const [kab, eks, kond, jenis] = await Promise.all([
+          fetchRegion(),
+          fetchExisting(),
+          fetchKondisi(),
+          fetchJenisJalan(),
+        ]);
+
+        setKabupaten(kab?.data?.kabupaten || []);
+        setExisting(eks?.data?.eksisting || []);
+        setKondisi(kond?.data?.eksisting || []);
+        setJenisJalan(jenis?.data?.eksisting || []);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Gagal mengambil data awal:', error);
       }
     };
 
-    fetchData();
+    fetchInitialData();
   }, []);
 
-  // FETCH KECAMATAN
+  // FETCH KECAMATAN/DESA BASED ON SELECTED KABUPATEN/KECAMATAN
   useEffect(() => {
-    const getKecamatan = async () => {
-      if (!selectedKabupatenId) return;
+    const fetchDependentData = async () => {
       try {
-        const response = await fetchKecamatan({
-          kabupatenId: selectedKabupatenId,
-        });
-        setKecamatan(response.data.kecamatan); // sesuaikan dengan struktur response kamu
+        if (selectedKabupatenId) {
+          const response = await fetchKecamatan({
+            kabupatenId: selectedKabupatenId,
+          });
+          setKecamatan(response.data.kecamatan || []);
+          setDesa([]); // Reset desa saat kabupaten berubah
+        }
+
+        if (selectedKecamatanId) {
+          const response = await fetchDesa({
+            kecamatanId: selectedKecamatanId,
+          });
+          setDesa(response.data.desa || []);
+        }
       } catch (error) {
-        console.error('Gagal mengambil data kecamatan:', error);
+        console.error('Gagal mengambil data kecamatan/desa:', error);
       }
     };
 
-    getKecamatan();
-  }, [selectedKabupatenId]);
-
-  // FETCH DESA
-  useEffect(() => {
-    const getDesa = async () => {
-      if (!selectedKecamatanId) return;
-      try {
-        const response = await fetchDesa({
-          kecamatanId: selectedKecamatanId,
-        });
-        setDesa(response.data.desa); // Sesuaikan struktur response kamu
-      } catch (error) {
-        console.error('Gagal mengambil data desa:', error);
-      }
-    };
-
-    getDesa();
-  }, [selectedKecamatanId]);
-
-  // FETCH EXISTING
-  useEffect(() => {
-    const getDesa = async () => {
-      try {
-        const response = await fetchExisting();
-        setExisting(response?.data?.eksisting);
-        // console.log(response);
-      } catch (error) {
-        console.error('Gagal mengambil data desa:', error);
-      }
-    };
-
-    getDesa();
-  }, []);
-
-  // FETCH KONDISI
-  useEffect(() => {
-    const getDesa = async () => {
-      try {
-        const response = await fetchKondisi();
-        setKondisi(response?.data?.eksisting);
-        // console.log(response);
-      } catch (error) {
-        console.error('Gagal mengambil data desa:', error);
-      }
-    };
-
-    getDesa();
-  }, []);
-
-  // FETCH JENIS JALAN
-  useEffect(() => {
-    const getDesa = async () => {
-      try {
-        const response = await fetchJenisJalan();
-        setJenisJalan(response?.data?.eksisting);
-        // console.log(response);
-      } catch (error) {
-        console.error('Gagal mengambil data desa:', error);
-      }
-    };
-
-    getDesa();
-  }, []);
+    fetchDependentData();
+  }, [selectedKabupatenId, selectedKecamatanId]);
 
   const _created = (e) => {
     const latlngs = e.layer.getLatLngs();
-
-    console.log('Polyline created:', latlngs);
+    // console.log('Polyline created:', latlngs);
 
     setCreatedLineLatLngs(latlngs);
-    setOpenDrawer(true); // Buka drawer
+    setOpenDrawer(true);
   };
 
-  // console.log(existing);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const encodedPath = polyline.encode(
+      createdLineLatLngs.map((point) => [point.lat, point.lng])
+    );
+
+    const nama_ruas = formData.get('nama_ruas');
+    const panjang = formData.get('panjang');
+    const lebar = formData.get('lebar');
+    const desa_id = formData.get('desa_id');
+    const eksisting_id = formData.get('eksisting_id');
+    const kondisi_id = formData.get('kondisi_id');
+    const jenisjalan_id = formData.get('jenisjalan_id');
+    const keterangan = formData.get('keterangan');
+    const paths = encodedPath;
+
+    try {
+      const token = localStorage.getItem('gis_token');
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/ruasjalan`,
+        {
+          paths: paths,
+          desa_id: desa_id,
+          kode_ruas: nama_ruas,
+          nama_ruas: nama_ruas,
+          panjang: panjang,
+          lebar: lebar,
+          eksisting_id: eksisting_id,
+          kondisi_id: kondisi_id,
+          jenisjalan_id: jenisjalan_id,
+          keterangan: keterangan,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log('Data berhasil disimpan:', res.data);
+      setOpenDrawer(false);
+    } catch (error) {
+      console.error('Gagal menyimpan data:', error);
+    }
+  };
 
   return (
     <>
@@ -296,7 +298,7 @@ const Map = () => {
               </div>
             )} */}
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className='p-4'>
                   <div className='space-y-4'>
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
@@ -310,7 +312,6 @@ const Map = () => {
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='desa_id'>Kabupaten</Label>
-
                       <Select
                         onValueChange={(val) => {
                           const selected = kabupaten.find(
@@ -358,7 +359,7 @@ const Map = () => {
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='desa_id'>Desa</Label>
 
-                      <Select>
+                      <Select name='desa_id'>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
@@ -378,7 +379,6 @@ const Map = () => {
                       <Label htmlFor='panjang'>Panjang</Label>
                       <Input
                         id='panjang'
-                        // defaultValue={marker.layerpanjang}
                         name='panjang'
                         required
                       />
@@ -387,18 +387,16 @@ const Map = () => {
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='lebar'>Lebar</Label>
                       <Input
-                        type='text'
                         id='lebar'
                         name='lebar'
-                        placeholder='Location Name'
                         required
                       />
                     </div>
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
-                      <Label htmlFor='existing_id'>Existing</Label>
+                      <Label htmlFor='eksisting_id'>Existing</Label>
 
-                      <Select>
+                      <Select name='eksisting_id'>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
@@ -416,7 +414,7 @@ const Map = () => {
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='kondisi_id'>Kondisi</Label>
-                      <Select>
+                      <Select name='kondisi_id'>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
@@ -434,7 +432,7 @@ const Map = () => {
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='jenisJalan_id'>Jenis Jalan</Label>
-                      <Select>
+                      <Select name='jenisjalan_id'>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
