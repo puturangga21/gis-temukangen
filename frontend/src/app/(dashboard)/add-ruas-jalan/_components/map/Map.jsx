@@ -270,7 +270,7 @@ const Map = () => {
             <Polyline
               key={i}
               positions={[ruas.pathsDecoded]}
-              color='blue'
+              color='purple'
               weight={3}>
               <Popup>
                 <div className='text-sm'>

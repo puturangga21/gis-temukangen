@@ -19,7 +19,7 @@ export async function fetchRuasJalan() {
       }
     );
 
-    return response.data.ruasjalan.length ?? [];
+    return response.data.ruasjalan ?? [];
     // return response ?? [];
   } catch (error) {}
 }
@@ -115,6 +115,23 @@ export async function fetchJenisJalan() {
 
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/mjenisjalan`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    return response ?? [];
+  } catch (error) {}
+}
+
+export async function fetchKecamatanByDesaId({ desaId }) {
+  try {
+    const authToken = localStorage.getItem('gis_token');
+
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_GIS_API_URL}/api/kecamatanbydesaid/${desaId}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,

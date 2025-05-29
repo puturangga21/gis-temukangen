@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, Activity } from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -15,13 +15,25 @@ import { HeaderSidebar } from '@/components/header-sidebar';
 
 const navMain = [
   {
+    title: 'Overview',
+    url: '#',
+    icon: Activity,
+    isActive: true,
+    items: [
+      {
+        title: 'Overview',
+        url: '#',
+      },
+    ],
+  },
+  {
     title: 'Map',
     url: '#',
     icon: MapPin,
     isActive: true,
     items: [
       {
-        title: 'Overview',
+        title: 'Location',
         url: '/',
       },
       {

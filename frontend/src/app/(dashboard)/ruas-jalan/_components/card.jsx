@@ -15,8 +15,8 @@ const OverviewCard = () => {
       try {
         const data = await fetchRuasJalan();
 
-        console.log(data);
-        setTotalMarker(data);
+        // console.log(data);
+        setTotalMarker(data.length);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
