@@ -63,7 +63,9 @@ const Map = () => {
   const [selectedTile, setSelectedTile] = useState(listTiles[0]);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [createdLineLatLngs, setCreatedLineLatLngs] = useState([]);
+  const [calculatedPanjang, setCalculatedPanjang] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const [kabupaten, setKabupaten] = useState([]);
   const [kecamatan, setKecamatan] = useState([]);
@@ -156,10 +158,18 @@ const Map = () => {
 
   const _created = (e) => {
     const latlngs = e.layer.getLatLngs();
-    // console.log('Polyline created:', latlngs);
-
     setCreatedLineLatLngs(latlngs);
+
+    let totalLength = 0;
+    for (let i = 0; i < latlngs.length - 1; i++) {
+      totalLength += latlngs[i].distanceTo(latlngs[i + 1]);
+    }
+
+    const lengthInKm = (totalLength / 1000).toFixed(2);
+    setCalculatedPanjang(parseFloat(lengthInKm));
+
     setOpenDrawer(true);
+    // console.log('Polyline created:', latlngs);
   };
 
   const handleSubmit = async (e) => {
@@ -208,7 +218,12 @@ const Map = () => {
       setOpenDrawer(false);
       console.log(res);
     } catch (error) {
-      console.error('Gagal menyimpan data:', error);
+      // console.error('Gagal menyimpan data:', error);
+      // console.error(error?.response?.status);
+
+      if (error?.response?.data.message === 500) {
+        setError('Data yang dimasukkan tidak valid. Silakan periksa kembali.');
+      }
     }
   };
 
@@ -275,7 +290,7 @@ const Map = () => {
               <Popup>
                 <div className='text-sm'>
                   <span className='font-semibold'>{ruas.nama_ruas}</span>
-                  <p>Panjang: {ruas.panjang} m</p>
+                  <p>Panjang: {ruas.panjang}</p>
                   <p>Keterangan: {ruas.keterangan}</p>
                 </div>
               </Popup>
@@ -286,7 +301,7 @@ const Map = () => {
             direction='right'
             open={openDrawer}
             onOpenChange={setOpenDrawer}>
-            <DrawerContent>
+            <DrawerContent className=''>
               <DrawerHeader>
                 <DrawerTitle>Are you absolutely sure?</DrawerTitle>
                 <DrawerDescription>
@@ -294,11 +309,11 @@ const Map = () => {
                 </DrawerDescription>
               </DrawerHeader>
 
-              {/* {error && (
-              <div className='bg-destructive text-white dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 p-3 rounded-lg'>
-                <p className='text-sm text-center'>{error}</p>
-              </div>
-            )} */}
+              {error && (
+                <div className='bg-destructive text-white dark:bg-destructive/60  py-3 rounded-lg max-w-[364px] mx-auto'>
+                  <p className='text-sm text-center mx-2'>{error}</p>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit}>
                 <div className='p-4'>
@@ -315,6 +330,7 @@ const Map = () => {
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='desa_id'>Kabupaten</Label>
                       <Select
+                        required
                         onValueChange={(val) => {
                           const selected = kabupaten.find(
                             (item) => item.kabupaten === val
@@ -340,6 +356,7 @@ const Map = () => {
                       <Label htmlFor='desa_id'>Kecamatan</Label>
 
                       <Select
+                        required
                         onValueChange={(val) => {
                           setSelectedKecamatanId(Number(val)); // pastikan ID disimpan
                         }}>
@@ -361,7 +378,9 @@ const Map = () => {
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='desa_id'>Desa</Label>
 
-                      <Select name='desa_id'>
+                      <Select
+                        name='desa_id'
+                        required>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
@@ -378,11 +397,13 @@ const Map = () => {
                     </div>
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
-                      <Label htmlFor='panjang'>Panjang</Label>
+                      <Label htmlFor='panjang'>Panjang (km)</Label>
                       <Input
                         id='panjang'
                         name='panjang'
                         required
+                        readOnly
+                        value={calculatedPanjang}
                       />
                     </div>
 
@@ -398,7 +419,9 @@ const Map = () => {
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='eksisting_id'>Existing</Label>
 
-                      <Select name='eksisting_id'>
+                      <Select
+                        name='eksisting_id'
+                        required>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
@@ -416,7 +439,9 @@ const Map = () => {
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='kondisi_id'>Kondisi</Label>
-                      <Select name='kondisi_id'>
+                      <Select
+                        name='kondisi_id'
+                        required>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>
@@ -434,7 +459,9 @@ const Map = () => {
 
                     <div className='grid w-full max-w-sm items-center gap-1.5'>
                       <Label htmlFor='jenisJalan_id'>Jenis Jalan</Label>
-                      <Select name='jenisjalan_id'>
+                      <Select
+                        name='jenisjalan_id'
+                        required>
                         <SelectTrigger className='w-full'>
                           <SelectValue placeholder='Pilih desa' />
                         </SelectTrigger>

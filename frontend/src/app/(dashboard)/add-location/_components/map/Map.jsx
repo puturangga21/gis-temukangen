@@ -132,8 +132,8 @@ const Map = () => {
             </DrawerHeader>
 
             {error && (
-              <div className='bg-destructive text-white dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 p-3 rounded-lg'>
-                <p className='text-sm text-center'>{error}</p>
+              <div className='bg-destructive text-white dark:bg-destructive/60  py-3 rounded-lg max-w-[364px] mx-auto'>
+                <p className='text-sm text-center mx-2'>{error}</p>
               </div>
             )}
 
